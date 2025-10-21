@@ -31,13 +31,13 @@ export class AuthService {
     const payload = { userId: user.id, username: user.username };
 
     const accessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      secret: process.env.JWT_SECRET as string,
+      expiresIn: (process.env.JWT_EXPIRES_IN ?? '1d') as any,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+      secret: process.env.JWT_REFRESH_SECRET as string,
+      expiresIn: (process.env.JWT_REFRESH_EXPIRES_IN ?? '7d') as any,
     });
 
     const hashedRT = await bcrypt.hash(refreshToken, 10);
