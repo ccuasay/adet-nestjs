@@ -13,13 +13,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       cache: true,
       load: [jwt],
     }),
-
-    // ✅ Correct JWT setup
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('jwt.secret'),
-        signOptions: { expiresIn: configService.get<string>('jwt.expiresIn') },
+      useFactory: async (jwt) => ({
+        secret: jwt.get('jwt.secret'),
+        expireIn: jwt.get('jwt.expiresIn'),
+        refreshSecret: jwt.get('jwt.refresh'),
       }),
       inject: [ConfigService],
     }),
